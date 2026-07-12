@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abdul Mohid Kashif — Cybersecurity Analyst Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1220;
+    --bg-alt:#0E1626;
+    --panel:#131B2C;
+    --panel-border:#24314A;
+    --text:#DCE3EC;
+    --text-dim:#8493AC;
+    --text-faint:#57647E;
+    --accent-info:#4FD1C5;
+    --accent-progress:#F2A93B;
+    --accent-planned:#5B6B85;
+    --accent-done:#34D399;
+    --mono:'JetBrains Mono', monospace;
+    --sans:'IBM Plex Sans', sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:100;
+    background:rgba(11,18,32,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--panel-border);
+  }
+  nav .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    height:56px;
+  }
+  .logo{
+    font-family:var(--mono);font-weight:600;font-size:14px;
+    color:var(--text);letter-spacing:0.02em;
+  }
+  .logo span{color:var(--accent-info);}
+  .navlinks{display:flex;gap:28px;font-family:var(--mono);font-size:12px;}
+  .navlinks a{
+    color:var(--text-dim);text-transform:uppercase;letter-spacing:0.08em;
+    transition:color 0.15s ease;
+    border-bottom:1px solid transparent;
+    padding-bottom:2px;
+  }
+  .navlinks a:hover, .navlinks a:focus-visible{color:var(--accent-info);border-bottom-color:var(--accent-info);}
+
+  /* ---------- HERO / TERMINAL ---------- */
+  header.hero{
+    padding:72px 0 56px;
+    border-bottom:1px solid var(--panel-border);
+  }
+  .terminal{
+    background:var(--panel);
+    border:1px solid var(--panel-border);
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 20px 60px -20px rgba(0,0,0,0.5);
+  }
+  .terminal-bar{
+    display:flex;align-items:center;gap:6px;
+    padding:10px 14px;
+    background:var(--bg-alt);
+    border-bottom:1px solid var(--panel-border);
+  }
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--panel-border);}
+  .terminal-title{
+    font-family:var(--mono);font-size:11px;color:var(--text-faint);
+    margin-left:8px;letter-spacing:0.04em;
+  }
+  .terminal-body{
+    padding:22px 20px 24px;
+    font-family:var(--mono);
+    font-size:13px;
+    min-height:150px;
+  }
+  .terminal-body .line{color:var(--text-dim);margin-bottom:6px;white-space:pre-wrap;}
+  .terminal-body .line .ts{color:var(--text-faint);}
+  .terminal-body .line .hi{color:var(--accent-info);}
+  .terminal-body .line .go{color:var(--accent-progress);}
+  .cursor{
+    display:inline-block;width:7px;height:14px;background:var(--accent-info);
+    vertical-align:middle;margin-left:2px;
+    animation:blink 1s step-end infinite;
+  }
+  @keyframes blink{50%{opacity:0;}}
+
+  .hero-heading{margin-top:36px;}
+  .hero-heading h1{
+    font-family:var(--mono);font-size:34px;font-weight:700;
+    letter-spacing:-0.01em;color:var(--text);
+  }
+  .hero-heading .role{
+    font-family:var(--mono);font-size:15px;color:var(--accent-info);
+    margin-top:8px;
+  }
+  .hero-heading p{
+    max-width:60ch;margin-top:14px;color:var(--text-dim);font-size:15px;
+  }
+  .hero-links{margin-top:22px;display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--mono);font-size:12px;letter-spacing:0.04em;
+    padding:9px 16px;border-radius:4px;border:1px solid var(--panel-border);
+    color:var(--text);transition:border-color .15s ease, color .15s ease;
+  }
+  .btn:hover, .btn:focus-visible{border-color:var(--accent-info);color:var(--accent-info);}
+  .btn.primary{background:var(--accent-info);color:var(--bg);border-color:var(--accent-info);}
+  .btn.primary:hover{opacity:0.88;color:var(--bg);}
+
+  /* ---------- SECTION SCAFFOLDING ---------- */
+  section{padding:56px 0;border-bottom:1px solid var(--panel-border);}
+  section:last-of-type{border-bottom:none;}
+
+  .section-head{
+    display:flex;align-items:baseline;gap:12px;margin-bottom:28px;
+  }
+  .section-tag{
+    font-family:var(--mono);font-size:11px;color:var(--text-faint);
+    letter-spacing:0.1em;
+  }
+  .section-head h2{
+    font-family:var(--mono);font-size:20px;color:var(--text);
+    letter-spacing:-0.01em;
+  }
+
+  /* status pill, used everywhere as the structural device */
+  .status{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:var(--mono);font-size:10px;letter-spacing:0.08em;
+    padding:3px 8px;border-radius:3px;text-transform:uppercase;
+    border:1px solid currentColor;
+  }
+  .status.progress{color:var(--accent-progress);}
+  .status.done{color:var(--accent-done);}
+  .status.planned{color:var(--accent-planned);}
+  .status::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+  /* ---------- ABOUT ---------- */
+  .about-text{color:var(--text-dim);font-size:15px;max-width:68ch;}
+  .about-text + .about-text{margin-top:12px;}
+
+  /* ---------- LEARNING LOG ---------- */
+  .log{border:1px solid var(--panel-border);border-radius:6px;overflow:hidden;}
+  .log-row{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding:14px 18px;
+    border-bottom:1px solid var(--panel-border);
+    background:var(--panel);
+  }
+  .log-row:last-child{border-bottom:none;}
+  .log-row .name{font-size:14px;color:var(--text);}
+  .log-row .meta{font-family:var(--mono);font-size:11px;color:var(--text-faint);margin-top:2px;}
+  .log-left{display:flex;flex-direction:column;}
+
+  /* ---------- PROJECTS ---------- */
+  .projects-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+  .project-card{
+    border:1px solid var(--panel-border);border-radius:6px;
+    background:var(--panel);padding:20px 22px;
+  }
+  .project-card.empty{
+    border-style:dashed;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .project-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;flex-wrap:wrap;}
+  .project-top h3{font-family:var(--mono);font-size:15px;color:var(--text);}
+  .project-card p{color:var(--text-dim);font-size:14px;}
+  .project-tools{
+    margin-top:12px;display:flex;gap:8px;flex-wrap:wrap;
+  }
+  .tool-tag{
+    font-family:var(--mono);font-size:10px;color:var(--text-faint);
+    border:1px solid var(--panel-border);padding:3px 8px;border-radius:3px;
+  }
+  .project-link{
+    display:inline-block;margin-top:14px;font-family:var(--mono);font-size:12px;
+    color:var(--accent-info);border-bottom:1px solid var(--accent-info);
+  }
+
+  /* ---------- CERTS ---------- */
+  .certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+  .cert-card{
+    border:1px solid var(--panel-border);border-radius:6px;background:var(--panel);
+    padding:16px 18px;
+  }
+  .cert-card .name{font-size:14px;color:var(--text);margin-bottom:6px;}
+  .cert-card .issuer{font-family:var(--mono);font-size:11px;color:var(--text-faint);}
+
+  /* ---------- CONTACT ---------- */
+  .contact-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;}
+
+  footer{
+    padding:32px 0 48px;text-align:center;
+    font-family:var(--mono);font-size:11px;color:var(--text-faint);
+  }
+
+  /* ---------- REDUCED MOTION ---------- */
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .cursor{animation:none;}
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:640px){
+    .navlinks{gap:16px;}
+    .navlinks a{letter-spacing:0.02em;}
+    .hero-heading h1{font-size:26px;}
+    section{padding:40px 0;}
+  }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent-info);outline-offset:2px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">Abdul Mohid Kashif<span>@</span>portfolio</div>
+    <div class="navlinks">
+      <a href="#about">About</a>
+      <a href="#learning">Learning</a>
+      <a href="#projects">Projects</a>
+      <a href="#certs">Certs</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <span class="terminal-title">session — analyst_intro.log</span>
+      </div>
+      <div class="terminal-body" id="termBody"></div>
+    </div>
+
+    <div class="hero-heading">
+      <h1>Abdul Mohid Kashif</h1>
+      <div class="role">Aspiring SOC / Cybersecurity Analyst</div>
+      <p>
+        Building foundational skills in security monitoring, log analysis, and incident response.
+        Currently working through the Google Cybersecurity Certificate and documenting hands-on
+        practice here as I go.
+      </p>
+      <div class="hero-links">
+        <a class="btn primary" href="#projects">View projects</a>
+        <a class="btn" href="mailto:your.email@example.com">Email me</a>
+        <a class="btn" href="https://github.com/YOUR_USERNAME" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://linkedin.com/in/YOUR_USERNAME" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">01</span>
+      <h2>About</h2>
+    </div>
+    <p class="about-text">
+      <!-- EDIT ME: 2-4 sentences about your background and why security. Keep it specific and honest — e.g. what pulled you toward this field, what you've been doing to build skills, what kind of role you're aiming for (SOC analyst, GRC, etc). -->
+      I'm early in my transition into cybersecurity, currently focused on building a strong foundation
+      in networking, systems, and security operations. I'm working through structured coursework and
+      hands-on labs, and this site tracks that progress in the open — including the projects,
+      not just the finished results.
+    </p>
+    <p class="about-text">
+      <!-- EDIT ME: optional second paragraph — background, prior field, what you bring from it. -->
+      Replace this paragraph with any relevant background — prior work experience, transferable skills
+      (e.g. IT support, customer service, ops), or specific interests within security you want to pursue.
+    </p>
+  </div>
+</section>
+
+<section id="learning">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">02</span>
+      <h2>Learning Log</h2>
+    </div>
+    <div class="log">
+      <div class="log-row">
+        <div class="log-left">
+          <div class="name">Google Cybersecurity Professional Certificate</div>
+          <div class="meta">Coursera — 8 course series</div>
+        </div>
+        <span class="status progress">In progress</span>
+      </div>
+      <div class="log-row">
+        <div class="log-left">
+          <div class="name">TryHackMe — Pre Security path</div>
+          <div class="meta">Networking & security fundamentals</div>
+        </div>
+        <span class="status planned">Planned</span>
+      </div>
+      <div class="log-row">
+        <div class="log-left">
+          <div class="name">Home lab — network + SIEM basics</div>
+          <div class="meta">VirtualBox, pfSense, Security Onion</div>
+        </div>
+        <span class="status planned">Planned</span>
+      </div>
+      <!-- ADD MORE ROWS as you complete/start things. Copy a .log-row block above and edit. -->
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">03</span>
+      <h2>Projects</h2>
+    </div>
+
+    <div class="projects-grid">
+      <!--
+        TEMPLATE FOR A REAL PROJECT (copy this block when you finish something):
+
+        <div class="project-card">
+          <div class="project-top">
+            <h3>Project title</h3>
+            <span class="status done">Complete</span>
+          </div>
+          <p>One or two sentences: the scenario/objective and what you found.</p>
+          <div class="project-tools">
+            <span class="tool-tag">Splunk</span>
+            <span class="tool-tag">Nmap</span>
+          </div>
+          <a class="project-link" href="LINK_TO_WRITEUP" target="_blank" rel="noopener">Read the write-up →</a>
+        </div>
+      -->
+
+      <div class="project-card empty">
+        <div class="project-top">
+          <h3>Home lab: network monitoring setup</h3>
+          <span class="status planned">Planned</span>
+        </div>
+        <p>Set up a small virtual network, generate traffic, and detect anomalies using a SIEM. Write-up coming once complete.</p>
+      </div>
+
+      <div class="project-card empty">
+        <div class="project-top">
+          <h3>Phishing email analysis</h3>
+          <span class="status planned">Planned</span>
+        </div>
+        <p>Break down a sample phishing email — headers, links, and red flags — as a triage report.</p>
+      </div>
+
+      <div class="project-card empty">
+        <div class="project-top">
+          <h3>TryHackMe write-up</h3>
+          <span class="status planned">Planned</span>
+        </div>
+        <p>Walkthrough of a completed room, focused on methodology and reasoning, not just the flags.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certs">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">04</span>
+      <h2>Certifications</h2>
+    </div>
+    <div class="certs-grid">
+      <div class="cert-card">
+        <div class="name">Google Cybersecurity Certificate</div>
+        <div class="issuer">Coursera · in progress</div>
+      </div>
+      <!-- ADD MORE cert-card blocks as you earn them (Security+, CySA+, TryHackMe/HTB badges, etc). -->
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">05</span>
+      <h2>Contact</h2>
+    </div>
+    <p class="about-text">Open to entry-level SOC/analyst roles and internships. Reach out any time.</p>
+    <div class="contact-row">
+      <a class="btn primary" href="mailto:your.email@example.com">your.email@example.com</a>
+      <a class="btn" href="https://linkedin.com/in/YOUR_USERNAME" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/YOUR_USERNAME" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="/resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Built and maintained by Abdul Mohid Kashif — last updated <span id="lastUpdated"></span>
+</footer>
+
+<script>
+  document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+  const lines = [
+    { ts:'[09:14:02]', text: 'session init — welcome', cls:'' },
+    { ts:'[09:14:03]', text: 'whoami → Abdul Mohid Kashif, cybersecurity analyst (in training)', cls:'hi' },
+    { ts:'[09:14:05]', text: 'status: Google Cybersecurity Certificate — IN PROGRESS', cls:'go' },
+    { ts:'[09:14:07]', text: 'loading projects... 0 complete, 3 planned', cls:'' },
+    { ts:'[09:14:09]', text: 'awaiting next module', cls:'' },
+  ];
+
+  const body = document.getElementById('termBody');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function renderStatic(){
+    body.innerHTML = lines.map(l =>
+      `<div class="line"><span class="ts">${l.ts}</span> <span class="${l.cls}">${l.text}</span></div>`
+    ).join('');
+  }
+
+  function typeLine(lineEl, text, cls, done){
+    let i = 0;
+    const span = document.createElement('span');
+    span.className = cls;
+    lineEl.appendChild(span);
+    const interval = setInterval(() => {
+      span.textContent += text[i];
+      i++;
+      if(i >= text.length){
+        clearInterval(interval);
+        done();
+      }
+    }, 14);
+  }
+
+  function typeAll(idx){
+    if(idx >= lines.length){
+      const cur = document.createElement('span');
+      cur.className = 'cursor';
+      body.appendChild(cur);
+      return;
+    }
+    const l = lines[idx];
+    const row = document.createElement('div');
+    row.className = 'line';
+    const ts = document.createElement('span');
+    ts.className = 'ts';
+    ts.textContent = l.ts + ' ';
+    row.appendChild(ts);
+    body.appendChild(row);
+    typeLine(row, l.text, l.cls, () => typeAll(idx + 1));
+  }
+
+  if(reduceMotion){
+    renderStatic();
+  } else {
+    typeAll(0);
+  }
+</script>
+
+</body>
+</html>
