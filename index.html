@@ -229,6 +229,17 @@
   .cert-card .name{font-size:14px;color:var(--text);margin-bottom:6px;}
   .cert-card .issuer{font-family:var(--mono);font-size:11px;color:var(--text-faint);}
 
+  /* ---------- RESUME ---------- */
+  .resume-grid{display:grid;grid-template-columns:1fr;gap:26px;}
+  .resume-block .resume-label{
+    font-family:var(--mono);font-size:13px;color:var(--text);
+    letter-spacing:0.04em;margin-bottom:10px;text-transform:uppercase;
+  }
+  .resume-label .resume-sub{
+    font-family:var(--sans);text-transform:none;letter-spacing:normal;
+    color:var(--text-faint);font-size:12px;
+  }
+
   /* ---------- CONTACT ---------- */
   .contact-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:18px;}
 
@@ -302,6 +313,7 @@
       <a href="#learning">Learning</a>
       <a href="#projects">Projects</a>
       <a href="#certs">Certs</a>
+      <a href="#resume">Resume</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
@@ -560,10 +572,82 @@
   </div>
 </section>
 
-<section id="contact">
+<section id="resume">
   <div class="wrap">
     <div class="section-head">
       <span class="section-tag">05</span>
+      <h2>Resume</h2>
+    </div>
+
+    <p class="about-text">
+      Aspiring Cybersecurity Analyst, currently completing the Google Cybersecurity Professional
+      Certificate. Full downloadable version below.
+    </p>
+    <div class="hero-links" style="margin-top:14px;margin-bottom:28px;">
+      <a class="btn primary" href="/resume.pdf" target="_blank" rel="noopener">Download PDF</a>
+    </div>
+
+    <div class="resume-grid">
+      <div class="resume-block">
+        <h3 class="resume-label">Education</h3>
+        <div class="log">
+          <div class="log-row">
+            <div class="log-left">
+              <div class="name">BS in Computer Engineering</div>
+              <div class="meta">Sir Syed University of Engineering &amp; Technology</div>
+            </div>
+            <span class="status progress">2024–2028</span>
+          </div>
+          <div class="log-row">
+            <div class="log-left">
+              <div class="name">Intermediate</div>
+              <div class="meta">College for Advanced Studies</div>
+            </div>
+            <span class="status done">2021–2023</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="resume-block">
+        <h3 class="resume-label">Technical Skills <span class="resume-sub">(in development)</span></h3>
+        <div class="project-tools">
+          <span class="tool-tag">CIA Triad &amp; Security Fundamentals</span>
+          <span class="tool-tag">TCP/IP &amp; Networking</span>
+          <span class="tool-tag">Firewalls &amp; VPNs</span>
+          <span class="tool-tag">Linux Command Line</span>
+          <span class="tool-tag">Python (scripting basics)</span>
+          <span class="tool-tag">SQL</span>
+          <span class="tool-tag">SIEM Concepts (Splunk)</span>
+          <span class="tool-tag">Log Analysis</span>
+          <span class="tool-tag">Incident Response Fundamentals</span>
+        </div>
+      </div>
+
+      <div class="resume-block">
+        <h3 class="resume-label">Soft Skills</h3>
+        <div class="project-tools">
+          <span class="tool-tag">Communication</span>
+          <span class="tool-tag">Analytical Problem-Solving</span>
+          <span class="tool-tag">Time Management</span>
+          <span class="tool-tag">Independent Learning</span>
+        </div>
+      </div>
+
+      <div class="resume-block">
+        <h3 class="resume-label">Languages</h3>
+        <div class="project-tools">
+          <span class="tool-tag">English — Fluent</span>
+          <span class="tool-tag">Urdu — Native</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="section-tag">06</span>
       <h2>Contact</h2>
     </div>
     <p class="about-text">Open to entry-level SOC/analyst roles and internships. Reach out any time.</p>
@@ -571,7 +655,6 @@
       <a class="btn primary" href="mailto:mohidkashif1624@gmail.com">mohidkashif1624@gmail.com</a>
       <a class="btn" href="https://www.linkedin.com/in/abdul-mohid-kashif-aab38a324" target="_blank" rel="noopener">LinkedIn</a>
       <a class="btn" href="https://github.com/mktechlab30" target="_blank" rel="noopener">GitHub</a>
-      <a class="btn" href="/resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
     </div>
   </div>
 </section>
