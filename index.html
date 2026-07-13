@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-<title>Abdul Mohid Kashif — Cybersecurity Analyst</title>
+<title>Abdul Mohid Kashif — Cybersecurity Analyst // Terminal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -11,7 +11,6 @@
     --bg:#04060a;
     --panel:#070c11;
     --panel-alt:#0a1119;
-    --sidebar:#060a0f;
     --border:#123322;
     --border-bright:#1c5238;
     --green:#43ffa0;
@@ -25,151 +24,150 @@
   }
 
   *{margin:0;padding:0;box-sizing:border-box;}
-  html,body{height:100%;background:var(--bg);overflow-x:hidden;}
-  body{font-family:var(--mono);color:var(--text);}
 
-  canvas#matrix{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:0.06;pointer-events:none;}
+  html,body{
+    height:100%;
+    background:var(--bg);
+    overflow-x:hidden;
+  }
+
+  body{
+    font-family:var(--mono);
+    color:var(--text);
+    display:flex;
+    flex-direction:column;
+  }
+
+  canvas#matrix{
+    position:fixed;inset:0;
+    width:100%;height:100%;
+    z-index:0;opacity:0.08;
+    pointer-events:none;
+  }
+
   .scanlines{
-    position:fixed;inset:0;z-index:1;pointer-events:none;
-    background:repeating-linear-gradient(to bottom, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+    position:fixed;inset:0;z-index:1;
+    pointer-events:none;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.015) 0px,
+      rgba(255,255,255,0.015) 1px,
+      transparent 1px,
+      transparent 3px
+    );
   }
 
-  .app{
+  .terminal{
     position:relative;z-index:2;
-    max-width:980px;margin:20px auto;padding:0 16px 40px;
+    max-width:820px;
+    width:100%;
+    margin:20px auto;
+    padding:0 16px 40px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
     min-height:calc(100vh - 40px);
-    display:flex;flex-direction:column;
   }
 
-  .topbar{
-    display:flex;align-items:center;justify-content:space-between;
-    background:var(--panel-alt);border:1px solid var(--border-bright);border-radius:8px 8px 0 0;
-    padding:12px 18px;
+  .window{
+    background:var(--panel);
+    border:1px solid var(--border-bright);
+    border-radius:8px;
+    box-shadow:0 0 0 1px rgba(67,255,160,0.05), 0 20px 60px -25px rgba(0,0,0,0.8);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    flex:1;
   }
-  .topbar .brand{font-size:13px;color:var(--green);letter-spacing:0.05em;font-weight:700;}
-  .topbar .brand span{color:var(--text-dim);font-weight:400;}
-  .topbar .status{display:flex;align-items:center;gap:14px;font-size:11px;color:var(--text-dim);}
-  .led{display:inline-flex;align-items:center;gap:6px;color:var(--green);}
-  .led i{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease-in-out infinite;}
+
+  .title-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 14px;
+    background:var(--panel-alt);
+    border-bottom:1px solid var(--border);
+  }
+  .tb-left{display:flex;align-items:center;gap:8px;}
+  .tb-dot{width:10px;height:10px;border-radius:50%;background:var(--border-bright);}
+  .tb-title{font-size:12px;color:var(--text-dim);margin-left:8px;letter-spacing:0.03em;}
+  .tb-status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--green);}
+  .tb-led{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease-in-out infinite;}
   @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
 
-  .body-frame{
-    display:flex;flex:1;
-    border:1px solid var(--border-bright);border-top:none;border-radius:0 0 8px 8px;
-    background:var(--panel);
-    overflow:hidden;
-    min-height:520px;
+  .output{
+    padding:18px 18px 6px;
+    font-size:13.5px;
+    line-height:1.65;
+    flex:1;
+    overflow-y:auto;
+    max-height:62vh;
   }
+  .output::-webkit-scrollbar{width:8px;}
+  .output::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:4px;}
+  .output::-webkit-scrollbar-track{background:transparent;}
 
-  .sidebar{
-    width:230px;flex-shrink:0;
-    background:var(--sidebar);
-    border-right:1px solid var(--border);
-    padding:14px 0;
-  }
-  .sidebar .label{
-    font-size:10px;color:var(--green-faint);letter-spacing:0.1em;
-    padding:0 16px 8px;text-transform:uppercase;
-  }
-  .script{
-    display:flex;align-items:center;justify-content:space-between;
-    width:100%;background:transparent;border:none;
-    border-left:2px solid transparent;
-    color:var(--text-dim);font-family:var(--mono);font-size:12.5px;
-    padding:9px 16px;cursor:pointer;text-align:left;
-    transition:background .12s ease, color .12s ease, border-color .12s ease;
-  }
-  .script:hover, .script:focus-visible{background:rgba(67,255,160,0.05);color:var(--text);}
-  .script.active{
-    color:var(--green);border-left-color:var(--green);
-    background:rgba(67,255,160,0.07);
-  }
-  .script .name::before{content:'$ ';color:var(--green-faint);}
-  .script.active .name::before{color:var(--green);}
-  .script .flag{font-size:9px;color:var(--green-faint);}
-  .script.active .flag{color:var(--cyan);}
-
-  .main{
-    flex:1;display:flex;flex-direction:column;min-width:0;
-  }
-  .path-bar{
-    font-size:11.5px;color:var(--text-dim);
-    padding:12px 20px;border-bottom:1px solid var(--border);
-    background:var(--panel-alt);
-  }
-  .path-bar .cwd{color:var(--cyan);}
-  .path-bar .exe{color:var(--green);}
-
-  .content{
-    padding:20px 22px 24px;
-    font-size:13.5px;line-height:1.7;
-    overflow-y:auto;flex:1;
-  }
-  .content::-webkit-scrollbar{width:8px;}
-  .content::-webkit-scrollbar-thumb{background:var(--border-bright);border-radius:4px;}
-  .content::-webkit-scrollbar-track{background:transparent;}
-
-  .line{white-space:pre-wrap;word-break:break-word;margin-bottom:4px;opacity:0;animation:fadein .18s ease forwards;}
-  @keyframes fadein{to{opacity:1;}}
+  .line{white-space:pre-wrap;word-break:break-word;margin-bottom:2px;}
   .l-dim{color:var(--text-dim);}
   .l-cyan{color:var(--cyan);}
   .l-magenta{color:var(--magenta);}
   .l-green{color:var(--green);}
-  .l-heading{color:var(--green);font-weight:700;font-size:15px;margin-bottom:8px;letter-spacing:0.02em;}
+  .l-heading{color:var(--green);font-weight:700;margin-top:10px;margin-bottom:4px;}
+  .l-cmd{color:var(--cyan);}
+  .l-prompt-echo{color:var(--text-dim);}
+  .l-prompt-echo .sym{color:var(--green);}
 
   a{color:var(--cyan);text-decoration:underline;text-underline-offset:2px;}
   a:hover, a:focus-visible{color:var(--magenta);}
 
   .tag{
-    display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:3px;
-    border:1px solid currentColor;letter-spacing:0.05em;margin-right:6px;vertical-align:1px;
+    display:inline-block;font-size:11px;padding:1px 7px;border-radius:3px;
+    border:1px solid currentColor;letter-spacing:0.05em;margin-right:6px;
   }
   .tag.progress{color:var(--cyan);}
   .tag.planned{color:var(--text-dim);}
   .tag.done{color:var(--green);}
 
-  .cursor-blink{
-    display:inline-block;width:7px;height:13px;background:var(--green);
-    vertical-align:-2px;margin-left:2px;animation:blink 1s step-end infinite;
-  }
-  @keyframes blink{50%{opacity:0;}}
-
-  .footer-links{
-    display:flex;flex-wrap:wrap;gap:10px;
-    padding:14px 22px 18px;border-top:1px solid var(--border);
+  .input-row{
+    display:flex;align-items:center;gap:8px;
+    padding:12px 18px;
+    border-top:1px solid var(--border);
     background:var(--panel-alt);
   }
-  .flink{
-    font-size:11.5px;color:var(--text-dim);border:1px solid var(--border-bright);
-    padding:6px 12px;border-radius:3px;text-decoration:none;
-    transition:color .12s ease, border-color .12s ease;
+  .prompt-sym{color:var(--green);font-size:13.5px;white-space:nowrap;}
+  #cmdInput{
+    flex:1;background:transparent;border:none;outline:none;
+    color:var(--text);font-family:var(--mono);font-size:13.5px;
+    caret-color:var(--green);
   }
-  .flink:hover, .flink:focus-visible{color:var(--green);border-color:var(--green);}
+  #cmdInput::placeholder{color:var(--green-faint);}
+
+  .chips{
+    display:flex;flex-wrap:wrap;gap:8px;
+    padding:12px 18px 16px;
+  }
+  .chip{
+    font-family:var(--mono);font-size:11px;color:var(--text-dim);
+    border:1px solid var(--border-bright);border-radius:3px;
+    padding:5px 10px;background:transparent;cursor:pointer;
+    transition:color .15s ease, border-color .15s ease;
+  }
+  .chip:hover, .chip:focus-visible{color:var(--green);border-color:var(--green);}
+
+  .sr-hint{
+    text-align:center;font-size:11px;color:var(--green-faint);
+    padding:10px 0 0;
+  }
 
   @media (prefers-reduced-motion:reduce){
-    .led{animation:none;}
-    .cursor-blink{animation:none;}
-    .line{opacity:1;animation:none;}
+    .tb-led{animation:none;}
     canvas#matrix{display:none;}
   }
 
-  @media (max-width:760px){
-    .body-frame{flex-direction:column;min-height:0;}
-    .sidebar{
-      width:100%;display:flex;overflow-x:auto;padding:10px 8px;
-      border-right:none;border-bottom:1px solid var(--border);
-      gap:4px;-webkit-overflow-scrolling:touch;
-    }
-    .sidebar::-webkit-scrollbar{display:none;}
-    .sidebar .label{display:none;}
-    .script{
-      flex-shrink:0;border-left:none;border-bottom:2px solid transparent;
-      padding:8px 12px;white-space:nowrap;
-    }
-    .script.active{border-left:none;border-bottom-color:var(--green);}
-    .content{max-height:52vh;padding:16px 16px 18px;font-size:12.5px;}
-    .path-bar{padding:10px 14px;font-size:11px;}
-    .footer-links{padding:12px 14px 14px;}
+  @media (max-width:640px){
+    .terminal{margin:10px auto;padding:0 8px 24px;}
+    .output{font-size:12.5px;max-height:56vh;padding:14px 14px 4px;}
+    .tb-title{display:none;}
+    .chips{padding:10px 12px 14px;}
+    .input-row{padding:10px 12px;}
   }
 </style>
 </head>
@@ -178,169 +176,209 @@
 <canvas id="matrix" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
 
-<div class="app">
-  <div class="topbar">
-    <div class="brand">MKTECHLAB30<span>:// abdul mohid kashif</span></div>
-    <div class="status">
-      <span class="led"><i></i>SECURE SESSION</span>
-    </div>
-  </div>
-
-  <div class="body-frame">
-    <nav class="sidebar" aria-label="Section scripts">
-      <div class="label">/usr/scripts</div>
-      <button class="script" data-key="about"><span class="name">about.sh</span><span class="flag">idle</span></button>
-      <button class="script" data-key="learning"><span class="name">learning.sh</span><span class="flag">idle</span></button>
-      <button class="script" data-key="projects"><span class="name">projects.sh</span><span class="flag">idle</span></button>
-      <button class="script" data-key="certs"><span class="name">certs.sh</span><span class="flag">idle</span></button>
-      <button class="script" data-key="resume"><span class="name">resume.sh</span><span class="flag">idle</span></button>
-      <button class="script" data-key="contact"><span class="name">contact.sh</span><span class="flag">idle</span></button>
-    </nav>
-
-    <div class="main">
-      <div class="path-bar"><span class="cwd">~/scripts</span> $ ./<span class="exe" id="pathExe">about.sh</span></div>
-      <div class="content" id="content" role="log" aria-live="polite"></div>
-      <div class="footer-links">
-        <a class="flink" href="mailto:mohidkashif1624@gmail.com">email</a>
-        <a class="flink" href="https://www.linkedin.com/in/abdul-mohid-kashif-aab38a324" target="_blank" rel="noopener">linkedin</a>
-        <a class="flink" href="https://github.com/mktechlab30" target="_blank" rel="noopener">github</a>
-        <a class="flink" href="/resume.pdf" target="_blank" rel="noopener">resume.pdf ↗</a>
+<div class="terminal">
+  <div class="window">
+    <div class="title-bar">
+      <div class="tb-left">
+        <div class="tb-dot"></div><div class="tb-dot"></div><div class="tb-dot"></div>
+        <span class="tb-title">guest@mktechlab30: ~</span>
       </div>
+      <div class="tb-status"><span class="tb-led"></span>ONLINE</div>
+    </div>
+
+    <div class="output" id="output" role="log" aria-live="polite" aria-label="Terminal output"></div>
+
+    <div class="chips" id="chips" aria-label="Quick commands">
+      <button class="chip" data-cmd="help">help</button>
+      <button class="chip" data-cmd="about">about</button>
+      <button class="chip" data-cmd="learning">learning</button>
+      <button class="chip" data-cmd="projects">projects</button>
+      <button class="chip" data-cmd="certs">certs</button>
+      <button class="chip" data-cmd="resume">resume</button>
+      <button class="chip" data-cmd="contact">contact</button>
+      <button class="chip" data-cmd="clear">clear</button>
+    </div>
+
+    <div class="input-row">
+      <span class="prompt-sym">guest@mktechlab30:~$</span>
+      <input id="cmdInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+             aria-label="Terminal command input" placeholder="type a command, or try 'help'">
     </div>
   </div>
+  <p class="sr-hint">No keyboard handy? Tap a command above.</p>
 </div>
 
 <script>
 (function(){
-  const contentEl = document.getElementById('content');
-  const pathExe = document.getElementById('pathExe');
-  const scripts = document.querySelectorAll('.script');
+  const output = document.getElementById('output');
+  const input = document.getElementById('cmdInput');
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const data = {
-    about: {
-      file: 'about.sh',
-      lines: [
-        { text: '// about', cls: 'l-heading' },
-        { text: "I'm early in my transition into cybersecurity, currently focused on building a strong foundation in networking, systems, and security operations.", cls: 'l-dim' },
-        { text: "I'm working through structured coursework and hands-on labs, and this site tracks that progress in the open — including the projects, not just the finished results.", cls: 'l-dim' },
-        { text: '', cls: '' },
-        { text: 'Currently pursuing a BS in Computer Engineering alongside self-directed security training. Open to entry-level SOC/analyst roles and internships.', cls: 'l-dim' },
-      ],
-    },
-    learning: {
-      file: 'learning.sh',
-      lines: [
-        { text: '// learning log', cls: 'l-heading' },
-        { text: '<span class="tag progress">IN PROGRESS</span> Google Cybersecurity Professional Certificate', cls: '' },
-        { text: '  Coursera — 8-course series', cls: 'l-dim' },
-        { text: '<span class="tag planned">PLANNED</span> TryHackMe — Pre Security path', cls: '' },
-        { text: '  Networking &amp; security fundamentals', cls: 'l-dim' },
-        { text: '<span class="tag planned">PLANNED</span> Home lab — network + SIEM basics', cls: '' },
-        { text: '  VirtualBox, pfSense, Security Onion', cls: 'l-dim' },
-      ],
-    },
-    projects: {
-      file: 'projects.sh',
-      lines: [
-        { text: '// projects', cls: 'l-heading' },
-        { text: '<span class="tag planned">PLANNED</span> home-lab-network-monitoring', cls: '' },
-        { text: '  Set up a small virtual network, generate traffic, and detect anomalies using a SIEM.', cls: 'l-dim' },
-        { text: '<span class="tag planned">PLANNED</span> phishing-email-analysis', cls: '' },
-        { text: '  Break down a sample phishing email — headers, links, and red flags — as a triage report.', cls: 'l-dim' },
-        { text: '<span class="tag planned">PLANNED</span> tryhackme-writeup', cls: '' },
-        { text: '  Walkthrough of a completed room, focused on methodology and reasoning, not just the flags.', cls: 'l-dim' },
-      ],
-    },
-    certs: {
-      file: 'certs.sh',
-      lines: [
-        { text: '// certifications', cls: 'l-heading' },
-        { text: '<span class="tag progress">IN PROGRESS</span> Google Cybersecurity Professional Certificate — Coursera', cls: '' },
-      ],
-    },
-    resume: {
-      file: 'resume.sh',
-      lines: [
-        { text: '// resume', cls: 'l-heading' },
-        { text: 'Education:', cls: 'l-cyan' },
-        { text: '  BS in Computer Engineering — Sir Syed University of Engineering &amp; Technology (2024–2028, in progress)', cls: 'l-dim' },
-        { text: '  Intermediate — College for Advanced Studies (2021–2023)', cls: 'l-dim' },
-        { text: '', cls: '' },
-        { text: 'Technical skills (in development):', cls: 'l-cyan' },
-        { text: '  CIA triad &amp; security fundamentals, TCP/IP &amp; networking, firewalls &amp; VPNs, Linux CLI, Python (scripting basics), SQL, SIEM concepts (Splunk), log analysis, incident response fundamentals', cls: 'l-dim' },
-        { text: '', cls: '' },
-        { text: 'Soft skills:', cls: 'l-cyan' },
-        { text: '  Communication, analytical problem-solving, time management, independent learning', cls: 'l-dim' },
-        { text: '', cls: '' },
-        { text: 'Languages: English (Fluent) · Urdu (Native)', cls: 'l-dim' },
-        { text: '', cls: '' },
-        { text: '→ <a href="/resume.pdf" target="_blank" rel="noopener">Download full resume (PDF)</a>', cls: 'l-green' },
-      ],
-    },
-    contact: {
-      file: 'contact.sh',
-      lines: [
-        { text: '// contact', cls: 'l-heading' },
-        { text: 'Open to entry-level SOC/analyst roles and internships. Reach out any time.', cls: 'l-dim' },
-        { text: '', cls: '' },
-        { text: 'email     <a href="mailto:mohidkashif1624@gmail.com">mohidkashif1624@gmail.com</a>', cls: '' },
-        { text: 'linkedin  <a href="https://www.linkedin.com/in/abdul-mohid-kashif-aab38a324" target="_blank" rel="noopener">linkedin.com/in/abdul-mohid-kashif</a>', cls: '' },
-        { text: 'github    <a href="https://github.com/mktechlab30" target="_blank" rel="noopener">github.com/mktechlab30</a>', cls: '' },
-      ],
-    },
-  };
-
-  let renderToken = 0;
-
-  function runScript(key){
-    const entry = data[key];
-    if(!entry) return;
-
-    scripts.forEach(s => {
-      const active = s.dataset.key === key;
-      s.classList.toggle('active', active);
-      s.querySelector('.flag').textContent = active ? 'running' : 'idle';
-    });
-    pathExe.textContent = entry.file;
-
-    const myToken = ++renderToken;
-    contentEl.innerHTML = '';
-
-    if(reduceMotion){
-      entry.lines.forEach(l => {
-        const div = document.createElement('div');
-        div.className = 'line ' + (l.cls || '');
-        div.style.opacity = 1;
-        div.innerHTML = l.text;
-        contentEl.appendChild(div);
-      });
-      return;
-    }
-
-    let i = 0;
-    function next(){
-      if(myToken !== renderToken) return;
-      if(i >= entry.lines.length) return;
-      const l = entry.lines[i];
-      const div = document.createElement('div');
-      div.className = 'line ' + (l.cls || '');
-      div.innerHTML = l.text;
-      contentEl.appendChild(div);
-      i++;
-      setTimeout(next, 55);
-    }
-    next();
+  function addLine(text, cls){
+    const div = document.createElement('div');
+    div.className = 'line' + (cls ? ' ' + cls : '');
+    div.innerHTML = text;
+    output.appendChild(div);
   }
 
-  scripts.forEach(s => {
-    s.addEventListener('click', () => runScript(s.dataset.key));
+  function addLines(lines){
+    lines.forEach(l => addLine(l.text, l.cls));
+    output.scrollTop = output.scrollHeight;
+  }
+
+  function escapeHtml(s){
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  const commands = {
+    help: () => [
+      { text: 'Available commands:', cls: 'l-heading' },
+      { text: '  help        show this list', cls: 'l-dim' },
+      { text: '  about       who I am and what I\'m doing', cls: 'l-dim' },
+      { text: '  learning    current learning log / course progress', cls: 'l-dim' },
+      { text: '  projects    hands-on projects (planned + complete)', cls: 'l-dim' },
+      { text: '  certs       certifications', cls: 'l-dim' },
+      { text: '  resume      skills, education, and resume download', cls: 'l-dim' },
+      { text: '  contact     how to reach me', cls: 'l-dim' },
+      { text: '  ls          list site contents', cls: 'l-dim' },
+      { text: '  clear       clear the screen', cls: 'l-dim' },
+    ],
+    whoami: () => [
+      { text: 'guest@mktechlab30 — viewing the portfolio of Abdul Mohid Kashif, aspiring Cybersecurity Analyst based in Karachi, Pakistan.', cls: 'l-green' },
+    ],
+    about: () => [
+      { text: '// about', cls: 'l-heading' },
+      { text: 'I\'m early in my transition into cybersecurity, currently focused on building a strong foundation in networking, systems, and security operations. I\'m working through structured coursework and hands-on labs, and this site tracks that progress in the open — including the projects, not just the finished results.', cls: 'l-dim' },
+      { text: '', cls: '' },
+      { text: 'Currently pursuing a BS in Computer Engineering alongside self-directed security training. Open to entry-level SOC/analyst roles and internships.', cls: 'l-dim' },
+    ],
+    learning: () => [
+      { text: '// learning log', cls: 'l-heading' },
+      { text: '<span class="tag progress">IN PROGRESS</span> Google Cybersecurity Professional Certificate — Coursera, 8-course series', cls: '' },
+      { text: '<span class="tag planned">PLANNED</span> TryHackMe — Pre Security path — networking &amp; security fundamentals', cls: '' },
+      { text: '<span class="tag planned">PLANNED</span> Home lab — network + SIEM basics — VirtualBox, pfSense, Security Onion', cls: '' },
+    ],
+    projects: () => [
+      { text: '// projects', cls: 'l-heading' },
+      { text: '<span class="tag planned">PLANNED</span> home-lab-network-monitoring', cls: '' },
+      { text: '  Set up a small virtual network, generate traffic, and detect anomalies using a SIEM.', cls: 'l-dim' },
+      { text: '<span class="tag planned">PLANNED</span> phishing-email-analysis', cls: '' },
+      { text: '  Break down a sample phishing email — headers, links, and red flags — as a triage report.', cls: 'l-dim' },
+      { text: '<span class="tag planned">PLANNED</span> tryhackme-writeup', cls: '' },
+      { text: '  Walkthrough of a completed room, focused on methodology and reasoning, not just the flags.', cls: 'l-dim' },
+    ],
+    certs: () => [
+      { text: '// certifications', cls: 'l-heading' },
+      { text: '<span class="tag progress">IN PROGRESS</span> Google Cybersecurity Professional Certificate — Coursera', cls: '' },
+    ],
+    resume: () => [
+      { text: '// resume', cls: 'l-heading' },
+      { text: 'Education:', cls: 'l-cyan' },
+      { text: '  BS in Computer Engineering — Sir Syed University of Engineering &amp; Technology (2024–2028, in progress)', cls: 'l-dim' },
+      { text: '  Intermediate — College for Advanced Studies (2021–2023)', cls: 'l-dim' },
+      { text: '', cls: '' },
+      { text: 'Technical skills (in development):', cls: 'l-cyan' },
+      { text: '  CIA triad &amp; security fundamentals, TCP/IP &amp; networking, firewalls &amp; VPNs, Linux CLI, Python (scripting basics), SQL, SIEM concepts (Splunk), log analysis, incident response fundamentals', cls: 'l-dim' },
+      { text: '', cls: '' },
+      { text: 'Soft skills:', cls: 'l-cyan' },
+      { text: '  Communication, analytical problem-solving, time management, independent learning', cls: 'l-dim' },
+      { text: '', cls: '' },
+      { text: 'Languages: English (Fluent) · Urdu (Native)', cls: 'l-dim' },
+      { text: '', cls: '' },
+      { text: '→ <a href="/resume.pdf" target="_blank" rel="noopener">Download full resume (PDF)</a>', cls: 'l-green' },
+    ],
+    contact: () => [
+      { text: '// contact', cls: 'l-heading' },
+      { text: 'Open to entry-level SOC/analyst roles and internships. Reach out any time.', cls: 'l-dim' },
+      { text: '', cls: '' },
+      { text: 'email     <a href="mailto:mohidkashif1624@gmail.com">mohidkashif1624@gmail.com</a>', cls: '' },
+      { text: 'linkedin  <a href="https://www.linkedin.com/in/abdul-mohid-kashif-aab38a324" target="_blank" rel="noopener">linkedin.com/in/abdul-mohid-kashif</a>', cls: '' },
+      { text: 'github    <a href="https://github.com/mktechlab30" target="_blank" rel="noopener">github.com/mktechlab30</a>', cls: '' },
+    ],
+    ls: () => [
+      { text: 'about.txt   learning.log   projects/   certs.db   resume.pdf   contact.sh', cls: 'l-dim' },
+    ],
+  };
+
+  function runCommand(raw){
+    const cmd = raw.trim();
+    addLine('<span class="sym">guest@mktechlab30:~$</span> ' + escapeHtml(cmd), 'l-prompt-echo');
+    if(cmd === ''){
+      output.scrollTop = output.scrollHeight;
+      return;
+    }
+    const lower = cmd.toLowerCase();
+
+    if(lower === 'clear'){
+      output.innerHTML = '';
+      return;
+    }
+    if(lower.startsWith('sudo')){
+      addLines([{ text: 'guest is not in the sudoers file. This incident will be reported. (not really — nice try)', cls: 'l-magenta' }]);
+      return;
+    }
+    if(commands[lower]){
+      addLines(commands[lower]());
+      return;
+    }
+    addLines([{ text: 'command not found: ' + escapeHtml(cmd) + ' — type <span class="l-cmd">help</span> for a list of commands.', cls: 'l-dim' }]);
+  }
+
+  const history = [];
+  let historyIdx = -1;
+
+  input.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter'){
+      const val = input.value;
+      history.push(val);
+      historyIdx = history.length;
+      runCommand(val);
+      input.value = '';
+    } else if(e.key === 'ArrowUp'){
+      if(historyIdx > 0){ historyIdx--; input.value = history[historyIdx] || ''; }
+      e.preventDefault();
+    } else if(e.key === 'ArrowDown'){
+      if(historyIdx < history.length){ historyIdx++; input.value = history[historyIdx] || ''; }
+      e.preventDefault();
+    }
   });
 
-  runScript('about');
+  document.getElementById('chips').addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip');
+    if(!btn) return;
+    runCommand(btn.dataset.cmd);
+    input.focus();
+  });
 
-  const canvas = document.getElementById('matrix');
+  document.querySelector('.window').addEventListener('click', (e) => {
+    if(e.target.tagName !== 'A') input.focus();
+  });
+
+  const boot = [
+    { text: '[ OK ] Initializing kernel modules...', cls: 'l-dim' },
+    { text: '[ OK ] Mounting filesystems...', cls: 'l-dim' },
+    { text: '[ OK ] Starting network interfaces...', cls: 'l-dim' },
+    { text: '[ OK ] Loading user profile: mktechlab30', cls: 'l-dim' },
+    { text: '[ OK ] Establishing secure session...', cls: 'l-dim' },
+    { text: '', cls: '' },
+    { text: 'Welcome, guest.', cls: 'l-green' },
+    { text: 'You are viewing the portfolio of <span class="l-cyan">Abdul Mohid Kashif</span> — Aspiring Cybersecurity Analyst.', cls: 'l-dim' },
+    { text: 'Type <span class="l-cmd">help</span> to see available commands, or tap one below.', cls: 'l-dim' },
+  ];
+
+  function bootSequence(idx){
+    if(idx >= boot.length){
+      input.focus();
+      return;
+    }
+    addLine(boot[idx].text, boot[idx].cls);
+    output.scrollTop = output.scrollHeight;
+    setTimeout(() => bootSequence(idx + 1), reduceMotion ? 0 : 160);
+  }
+  bootSequence(0);
+
   if(!reduceMotion){
+    const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
     let w, h, cols, drops;
     const chars = 'アイウエオカキクケコサシスセソ0123456789ABCDEF';
