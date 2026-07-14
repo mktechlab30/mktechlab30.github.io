@@ -68,6 +68,82 @@
     flex-direction:column;
     min-height:calc(100vh - 48px);
     min-height:calc(100dvh - 48px);
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .8s ease;
+  }
+  .terminal.revealed{opacity:1;visibility:visible;}
+
+  /* ---------- ACCESS GATE ---------- */
+  .gate{
+    position:fixed;inset:0;z-index:50;
+    display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 40%, #071410 0%, #04060a 70%);
+    padding:20px;
+    transition:opacity .6s ease;
+  }
+  .gate.gate-hidden{opacity:0;pointer-events:none;}
+  .gate-box{
+    width:100%;max-width:420px;
+    background:var(--panel);
+    border:1px solid var(--border-bright);
+    border-radius:8px;
+    padding:28px 26px 24px;
+    box-shadow:0 0 40px -10px rgba(67,255,160,0.15), 0 20px 60px -25px rgba(0,0,0,0.8);
+    text-align:center;
+  }
+  .gate-box.shake{animation:shake .35s ease;}
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%{transform:translateX(-8px);}
+    40%{transform:translateX(8px);}
+    60%{transform:translateX(-5px);}
+    80%{transform:translateX(5px);}
+  }
+  .gate-lock{font-size:26px;margin-bottom:14px;color:var(--green);}
+  .gate-line{font-size:12.5px;letter-spacing:0.04em;margin-bottom:6px;}
+  .gate-line.l-dim{color:var(--text-dim);}
+  .gate-line.l-green{color:var(--green);font-weight:600;}
+  #gateForm{
+    display:flex;align-items:center;gap:8px;
+    margin:18px 0 10px;
+    border:1px solid var(--border-bright);border-radius:4px;
+    padding:9px 12px;background:var(--panel-alt);
+  }
+  .gate-prompt{color:var(--green);font-size:13px;white-space:nowrap;}
+  #gateInput{
+    flex:1;background:transparent;border:none;outline:none;
+    color:var(--text);font-family:var(--mono);font-size:13px;caret-color:var(--green);
+    text-align:left;min-width:0;
+  }
+  .gate-proceed{
+    flex-shrink:0;
+    background:var(--green);color:#04140c;border:none;border-radius:3px;
+    font-family:var(--mono);font-size:11.5px;font-weight:700;letter-spacing:0.03em;
+    padding:7px 12px;cursor:pointer;
+    transition:opacity .15s ease;
+  }
+  .gate-proceed:hover, .gate-proceed:focus-visible{opacity:0.85;}
+  .gate-hint{font-size:11px;color:var(--green-faint);margin-bottom:10px;}
+  .gate-msg{min-height:18px;font-size:12px;font-weight:600;margin-bottom:6px;}
+  .gate-msg.denied{color:var(--magenta);}
+  .gate-msg.granted{color:var(--green);}
+  .gate-skip{
+    margin-top:8px;background:transparent;border:none;
+    color:var(--text-dim);font-family:var(--mono);font-size:11px;
+    text-decoration:underline;text-underline-offset:2px;cursor:pointer;
+  }
+  .gate-skip:hover, .gate-skip:focus-visible{color:var(--green);}
+
+  @media (prefers-reduced-motion:reduce){
+    .gate-box.shake{animation:none;}
+  }
+
+  @media (max-width:380px){
+    #gateForm{flex-wrap:wrap;}
+    .gate-prompt{display:none;}
+    #gateInput{flex:1 1 100%;}
+    .gate-proceed{flex:1 1 100%;padding:8px 12px;}
   }
 
   .window{
@@ -191,7 +267,22 @@
 <canvas id="matrix" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
 
-<div class="terminal">
+<div class="gate" id="gate">
+  <div class="gate-box" id="gateBox">
+    <div class="gate-lock">🔒</div>
+    <div class="gate-line l-dim">RESTRICTED SYSTEM ACCESS</div>
+    <div class="gate-line l-green">TYPE "CYBERSECURITY" TO PROCEED</div>
+    <form id="gateForm">
+      <span class="gate-prompt">code:</span>
+      <input id="gateInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Access code">
+      <button type="submit" class="gate-proceed">Proceed</button>
+    </form>
+    <div class="gate-msg" id="gateMsg" role="status" aria-live="polite"></div>
+    <button type="button" class="gate-skip" id="gateSkip">skip intro → classic view</button>
+  </div>
+</div>
+
+<div class="terminal" id="terminalApp">
   <div class="window">
     <div class="title-bar">
       <div class="tb-left">
@@ -390,35 +481,92 @@
     output.scrollTop = output.scrollHeight;
     setTimeout(() => bootSequence(idx + 1), reduceMotion ? 0 : 160);
   }
-  bootSequence(0);
 
-  if(!reduceMotion){
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-    let w, h, cols, drops;
-    const chars = 'アイウエオカキクケコサシスセソ0123456789ABCDEF';
-    function resize(){
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-      cols = Math.floor(w / 16);
-      drops = new Array(cols).fill(1);
+  let matrixIntensity = 0.05;
+  let drawStarted = false;
+  const canvas = document.getElementById('matrix');
+  const ctx = canvas.getContext('2d');
+  let w, h, cols, drops;
+  const chars = 'アイウエオカキクケコサシスセソ0123456789ABCDEF';
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    cols = Math.floor(w / 16);
+    drops = new Array(cols).fill(1);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  function draw(){
+    ctx.fillStyle = 'rgba(4,6,10,0.08)';
+    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = '#43ffa0';
+    ctx.font = '14px monospace';
+    for(let i=0;i<drops.length;i++){
+      const text = chars[Math.floor(Math.random()*chars.length)];
+      ctx.fillText(text, i*16, drops[i]*16);
+      if(drops[i]*16 > h && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
     }
-    resize();
-    window.addEventListener('resize', resize);
-    function draw(){
-      ctx.fillStyle = 'rgba(4,6,10,0.08)';
-      ctx.fillRect(0,0,w,h);
-      ctx.fillStyle = '#43ffa0';
-      ctx.font = '14px monospace';
-      for(let i=0;i<drops.length;i++){
-        const text = chars[Math.floor(Math.random()*chars.length)];
-        ctx.fillText(text, i*16, drops[i]*16);
-        if(drops[i]*16 > h && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-      }
-    }
+  }
+  function startMatrix(){
+    if(drawStarted || reduceMotion) return;
+    drawStarted = true;
     setInterval(draw, 60);
   }
+  startMatrix();
+
+  function startApp(){
+    document.getElementById('terminalApp').classList.add('revealed');
+    canvas.style.transition = 'opacity 1.2s ease';
+    canvas.style.opacity = '0.14';
+    bootSequence(0);
+  }
+
+  // ---------- ACCESS GATE ----------
+  const ACCESS_CODE = 'cybersecurity';
+  const gate = document.getElementById('gate');
+  const gateBox = document.getElementById('gateBox');
+  const gateForm = document.getElementById('gateForm');
+  const gateInput = document.getElementById('gateInput');
+  const gateMsg = document.getElementById('gateMsg');
+  const gateSkip = document.getElementById('gateSkip');
+
+  function unlockGate(withCeremony){
+    if(withCeremony && !reduceMotion){
+      gateMsg.textContent = 'ACCESS GRANTED';
+      gateMsg.className = 'gate-msg granted';
+      gateInput.disabled = true;
+      setTimeout(() => {
+        gate.classList.add('gate-hidden');
+        setTimeout(() => { gate.style.display = 'none'; startApp(); }, 650);
+      }, 550);
+    } else {
+      gate.style.display = 'none';
+      startApp();
+    }
+  }
+
+  gateForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const val = gateInput.value.trim().toLowerCase();
+    if(val === ACCESS_CODE){
+      unlockGate(true);
+    } else {
+      gateMsg.textContent = 'ACCESS DENIED — TRY AGAIN';
+      gateMsg.className = 'gate-msg denied';
+      gateBox.classList.remove('shake');
+      void gateBox.offsetWidth;
+      gateBox.classList.add('shake');
+      gateInput.value = '';
+      gateInput.focus();
+    }
+  });
+
+  gateSkip.addEventListener('click', () => {
+    window.location.href = 'dashboard.html';
+  });
+
+  gateInput.focus();
 })();
 </script>
 
