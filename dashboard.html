@@ -19,6 +19,7 @@
     --accent-progress:#F2A93B;
     --accent-planned:#5B6B85;
     --accent-done:#34D399;
+    --accent-paused:#F2596B;
     --mono:'JetBrains Mono', monospace;
     --sans:'IBM Plex Sans', sans-serif;
   }
@@ -100,6 +101,7 @@
   .status.progress{color:var(--accent-progress);}
   .status.done{color:var(--accent-done);}
   .status.planned{color:var(--accent-planned);}
+  .status.paused{color:var(--accent-paused);}
   .status::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;}
 
   /* ---------- ABOUT ---------- */
@@ -221,7 +223,7 @@
       <div class="role">Aspiring SOC / Cybersecurity Analyst</div>
       <p>
         Building foundational skills in security monitoring, log analysis, and incident response.
-        Currently working through the Google Cybersecurity Certificate and documenting hands-on
+        Currently working through Cisco Networking Academy's Introduction to Cybersecurity course and documenting hands-on
         practice here as I go.
       </p>
       <div class="hero-links">
@@ -323,10 +325,17 @@
       </div>
       <div class="log-row">
         <div class="log-left">
-          <div class="name">Google Cybersecurity Professional Certificate</div>
-          <div class="meta">Coursera — 8 course series</div>
+          <div class="name">Introduction to Cybersecurity</div>
+          <div class="meta">Cisco Networking Academy — current focus</div>
         </div>
         <span class="status progress">In progress</span>
+      </div>
+      <div class="log-row">
+        <div class="log-left">
+          <div class="name">Google Cybersecurity Professional Certificate</div>
+          <div class="meta">Coursera — 8 course series (paused: Coursera premium/license issue)</div>
+        </div>
+        <span class="status paused">Paused</span>
       </div>
       <div class="log-row">
         <div class="log-left">
@@ -421,13 +430,17 @@
     </div>
     <div class="certs-grid">
       <div class="cert-card">
-        <div class="name">Google Cybersecurity Certificate</div>
-        <div class="issuer">Coursera · in progress</div>
-      </div>
-      <div class="cert-card">
         <div class="name">Deloitte Australia Cyber Job Simulation</div>
         <div class="issuer">Forage · completed July 22, 2026</div>
         <div class="desc">Analyzed web activity logs, supported a client through a cyber security breach, and identified suspicious user activity.</div>
+      </div>
+      <div class="cert-card">
+        <div class="name">Introduction to Cybersecurity</div>
+        <div class="issuer">Cisco Networking Academy · in progress</div>
+      </div>
+      <div class="cert-card">
+        <div class="name">Google Cybersecurity Certificate</div>
+        <div class="issuer">Coursera · paused (premium/license issue)</div>
       </div>
     </div>
   </div>
@@ -441,8 +454,8 @@
     </div>
 
     <p class="about-text">
-      Aspiring Cybersecurity Analyst, currently completing the Google Cybersecurity Professional
-      Certificate. Full downloadable version below.
+      Aspiring Cybersecurity Analyst, currently working through Cisco Networking Academy's
+      Introduction to Cybersecurity course. Full downloadable version below.
     </p>
     <div class="hero-links" style="margin-top:14px;margin-bottom:28px;">
       <a class="btn primary" href="/resume.pdf" target="_blank" rel="noopener">Download PDF</a>
@@ -530,7 +543,7 @@
   const lines = [
     { ts:'[09:14:02]', text: 'session init — welcome', cls:'' },
     { ts:'[09:14:03]', text: 'whoami → Abdul Mohid Kashif, cybersecurity analyst (in training)', cls:'hi' },
-    { ts:'[09:14:05]', text: 'status: Google Cybersecurity Certificate — IN PROGRESS', cls:'go' },
+    { ts:'[09:14:05]', text: 'status: Introduction to Cybersecurity (Cisco) — IN PROGRESS', cls:'go' },
     { ts:'[09:14:07]', text: 'loading projects... 0 complete, 3 planned', cls:'' },
     { ts:'[09:14:09]', text: 'awaiting next module', cls:'' },
   ];
