@@ -120,6 +120,12 @@
 
   /* ---------- LEARNING LOG ---------- */
   .log{border:1px solid var(--panel-border);border-radius:6px;overflow:hidden;}
+  .log + .log-subhead{margin-top:28px;}
+  .log-subhead{
+    font-family:var(--mono);font-size:12px;color:var(--text-faint);
+    letter-spacing:0.08em;text-transform:uppercase;
+    margin-bottom:10px;
+  }
   .log-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border-bottom:1px solid var(--panel-border);background:var(--panel);}
   .log-row:last-child{border-bottom:none;}
   .log-row .name{font-size:14px;color:var(--text);}
@@ -321,11 +327,13 @@
       <span class="section-tag">02</span>
       <h2>Learning Log</h2>
     </div>
+
+    <h3 class="log-subhead">Courses &amp; Certifications</h3>
     <div class="log">
       <div class="log-row">
         <div class="log-left">
-          <div class="name">Deloitte Australia Cyber Job Simulation</div>
-          <div class="meta">Forage — analyzed web activity logs &amp; supported a client through a security breach</div>
+          <div class="name">Basics of Python (CR641)</div>
+          <div class="meta">UniAthena × Cambridge International Qualifications, UK — 96/100, Pass</div>
         </div>
         <span class="status done">Complete</span>
       </div>
@@ -338,24 +346,28 @@
       </div>
       <div class="log-row">
         <div class="log-left">
-          <div class="name">Basics of Python (CR641)</div>
-          <div class="meta">UniAthena × Cambridge International Qualifications, UK — 96/100, Pass</div>
-        </div>
-        <span class="status done">Complete</span>
-      </div>
-      <div class="log-row">
-        <div class="log-left">
           <div class="name">Google Cybersecurity Professional Certificate</div>
           <div class="meta">Coursera — 8 course series (paused: Coursera premium/license issue)</div>
         </div>
         <span class="status paused">Paused</span>
       </div>
+    </div>
+
+    <h3 class="log-subhead">Hands-on Labs &amp; Practical Experience</h3>
+    <div class="log">
       <div class="log-row">
         <div class="log-left">
-          <div class="name">TryHackMe — Pre Security path</div>
-          <div class="meta">Networking & security fundamentals</div>
+          <div class="name">Deloitte Australia Cyber Job Simulation</div>
+          <div class="meta">Forage — analyzed web activity logs &amp; supported a client through a security breach</div>
         </div>
-        <span class="status planned">Planned</span>
+        <span class="status done">Complete</span>
+      </div>
+      <div class="log-row">
+        <div class="log-left">
+          <div class="name">TryHackMe — Introduction to Cyber Security</div>
+          <div class="meta">Practical labs — Module 1 complete; Module 2 (Computer Fundamentals) in progress</div>
+        </div>
+        <span class="status progress">In progress</span>
       </div>
       <div class="log-row">
         <div class="log-left">
