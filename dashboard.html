@@ -147,7 +147,9 @@
   /* ---------- CERTS ---------- */
   .certs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
   .cert-card{border:1px solid var(--panel-border);border-radius:6px;background:var(--panel);padding:16px 18px;}
-  .cert-card .name{font-size:14px;color:var(--text);margin-bottom:6px;}
+  .cert-card .cert-top{display:flex;align-items:center;gap:12px;margin-bottom:6px;}
+  .cert-card .badge{width:40px;height:40px;border-radius:8px;flex-shrink:0;object-fit:cover;}
+  .cert-card .name{font-size:14px;color:var(--text);}
   .cert-card .issuer{font-family:var(--mono);font-size:11px;color:var(--text-faint);}
   .cert-card .desc{font-size:12.5px;color:var(--text-dim);margin-top:8px;}
   .cert-card .cert-links{margin-top:10px;display:flex;gap:12px;flex-wrap:wrap;}
@@ -234,9 +236,8 @@
       <h1>Abdul Mohid Kashif</h1>
       <div class="role">Aspiring SOC / Cybersecurity Analyst</div>
       <p>
-        Building foundational skills in security monitoring, log analysis, and incident response.
-        Currently working through Cisco Networking Academy's Introduction to Cybersecurity course and documenting hands-on
-        practice here as I go.
+        Building foundational skills in security monitoring, log analysis, and incident response
+        through completed courses, job simulations, and hands-on labs — documented here as I go.
       </p>
       <div class="hero-links">
         <a class="btn primary" href="#projects">View projects</a>
@@ -340,9 +341,9 @@
       <div class="log-row">
         <div class="log-left">
           <div class="name">Introduction to Cybersecurity</div>
-          <div class="meta">Cisco Networking Academy — Module 2 of 5 complete</div>
+          <div class="meta">Cisco Networking Academy — completed July 28, 2026</div>
         </div>
-        <span class="status progress">In progress</span>
+        <span class="status done">Complete</span>
       </div>
       <div class="log-row">
         <div class="log-left">
@@ -366,6 +367,13 @@
         <div class="log-left">
           <div class="name">Mastercard Cybersecurity Job Simulation</div>
           <div class="meta">Forage — Security Awareness Team: phishing threat identification &amp; training design</div>
+        </div>
+        <span class="status done">Complete</span>
+      </div>
+      <div class="log-row">
+        <div class="log-left">
+          <div class="name">Commonwealth Bank Introduction to Cybersecurity Job Simulation</div>
+          <div class="meta">Forage — fraud detection, Splunk dashboards, incident response, security awareness &amp; penetration testing</div>
         </div>
         <span class="status done">Complete</span>
       </div>
@@ -478,6 +486,14 @@
         </div>
       </div>
       <div class="cert-card">
+        <div class="name">Commonwealth Bank Introduction to Cybersecurity Job Simulation</div>
+        <div class="issuer">Forage · completed July 28, 2026</div>
+        <div class="desc">Worked as a cybersecurity generalist on fraud detection — built Splunk dashboards from historical customer data, practiced incident response, designed a password-security infographic, and performed a penetration test on a web application.</div>
+        <div class="cert-links">
+          <a href="/commonwealth-bank-cybersecurity-job-simulation.pdf" target="_blank" rel="noopener">Download certificate ↗</a>
+        </div>
+      </div>
+      <div class="cert-card">
         <div class="name">Basics of Python (CR641)</div>
         <div class="issuer">UniAthena × Cambridge International Qualifications, UK · completed July 25, 2026</div>
         <div class="desc">Score: 96/100 — Pass</div>
@@ -487,9 +503,15 @@
         </div>
       </div>
       <div class="cert-card">
-        <div class="name">Introduction to Cybersecurity</div>
-        <div class="issuer">Cisco Networking Academy · in progress</div>
-        <div class="desc">Modules 1–2 complete (Introduction to Cybersecurity; Attacks, Concepts and Techniques). Modules 3–5 and final exam remaining.</div>
+        <div class="cert-top">
+          <img class="badge" src="/cisco-introduction-to-cybersecurity-badge.png" alt="Cisco Networking Academy Introduction to Cybersecurity verified badge">
+          <div class="name">Introduction to Cybersecurity</div>
+        </div>
+        <div class="issuer">Cisco Networking Academy · completed July 28, 2026</div>
+        <div class="desc">Cert ID: 43bc0d7c-02c9-4f8c-859f-c28c9a61bdb8</div>
+        <div class="cert-links">
+          <a href="/cisco-introduction-to-cybersecurity-certificate.pdf" target="_blank" rel="noopener">Download certificate ↗</a>
+        </div>
       </div>
       <div class="cert-card">
         <div class="name">Introduction to CIP</div>
@@ -511,8 +533,8 @@
     </div>
 
     <p class="about-text">
-      Aspiring Cybersecurity Analyst, currently working through Cisco Networking Academy's
-      Introduction to Cybersecurity course. Full downloadable version below.
+      Aspiring Cybersecurity Analyst building experience through completed courses, job simulations,
+      and hands-on labs. Full downloadable version below.
     </p>
     <div class="hero-links" style="margin-top:14px;margin-bottom:28px;">
       <a class="btn primary" href="/resume.pdf" target="_blank" rel="noopener">Download PDF</a>
@@ -600,7 +622,7 @@
   const lines = [
     { ts:'[09:14:02]', text: 'session init — welcome', cls:'' },
     { ts:'[09:14:03]', text: 'whoami → Abdul Mohid Kashif, cybersecurity analyst (in training)', cls:'hi' },
-    { ts:'[09:14:05]', text: 'status: Introduction to Cybersecurity (Cisco) — IN PROGRESS', cls:'go' },
+    { ts:'[09:14:05]', text: 'status: 3 job simulations + 2 certifications complete', cls:'go' },
     { ts:'[09:14:07]', text: 'loading projects... 0 complete, 3 planned', cls:'' },
     { ts:'[09:14:09]', text: 'awaiting next module', cls:'' },
   ];
